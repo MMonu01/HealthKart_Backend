@@ -17,10 +17,12 @@ CartRouter.get("/", async (req, res) => {
 CartRouter.post("/add", async (req, res) => {
   try {
     let name = req.body.name
-    let product = await CartModel.findOne({name})
-    // console.log(product,name)
+    let UserId = req.body.user
+    let product = await CartModel.find({name,user:UserId})
+   
     
-    if(product){
+    if(product.length>0){
+      product = product[0]
       product.quantity = product.quantity+req.body.quantity
       
 await CartModel.findByIdAndUpdate({_id:product["_id"]},product)
